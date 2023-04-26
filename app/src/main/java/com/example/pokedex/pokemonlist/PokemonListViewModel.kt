@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.example.pokedex.data.models.PokedexListEntry
 import com.example.pokedex.repository.PokemonRepository
+import com.example.pokedex.util.Constant.IMAGE_REQUEST_URL
 import com.example.pokedex.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -79,8 +80,7 @@ class PokemonListViewModel @Inject constructor(
                         } else {
                             entry.url.takeLastWhile { it.isDigit() }
                         }
-                        val url =
-                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$number.png"
+                        val url = "$IMAGE_REQUEST_URL$number.png"
                         PokedexListEntry(
                             name = entry.name.capitalize(Locale.ROOT),
                             imageUrl = url,

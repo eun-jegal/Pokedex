@@ -211,7 +211,7 @@ fun Pokemon(
             .background(color = dominantColor, shape = RoundedCornerShape(8.dp))
             .clickable {
                 navController.navigate(
-                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.name}"
+                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.name}/${entry.number}"
                 )
             }
     ) {

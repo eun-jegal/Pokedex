@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -25,16 +27,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.pokedex.R
 import com.example.pokedex.data.remote.responses.Pokemon
 import com.example.pokedex.data.remote.responses.Type
 import com.example.pokedex.util.*
+import com.example.pokedex.util.Constant.IMAGE_REQUEST_URL
 import java.util.*
 
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Int,
     name: String,
+    number: Int,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
@@ -53,6 +59,7 @@ fun PokemonDetailScreen(
         TopBar(navController = navController)
         PokemonDetailStateWrapper(
             pokemonDetail = pokemonDetail,
+            number = number,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -116,12 +123,14 @@ fun TopBar(
 fun PokemonDetailStateWrapper(
     pokemonDetail: Resource<Pokemon>,
     modifier: Modifier = Modifier,
+    number: Int,
     loadingModifier: Modifier = Modifier
 ) {
     when (pokemonDetail) {
         is Resource.Success -> {
             PokemonDetailSection(
                 pokemonDetail = pokemonDetail.data!!,
+                number = number,
                 modifier = Modifier.offset(y = (-20).dp)
             )
         }
@@ -143,6 +152,7 @@ fun PokemonDetailStateWrapper(
 @Composable
 fun PokemonDetailSection(
     pokemonDetail: Pokemon,
+    number: Int,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -152,7 +162,7 @@ fun PokemonDetailSection(
             .verticalScroll(scrollState)
     ) {
         PokemonNumberAndName(
-            number = pokemonDetail.order,
+            number = number,
             name = pokemonDetail.name
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -160,7 +170,7 @@ fun PokemonDetailSection(
         PokemonTypes(types = pokemonDetail.types)
         Spacer(modifier = Modifier.height(16.dp))
 
-        PokemonImage(imageUrl = "")
+        PokemonImage(number = number)
 
         Column(
             modifier = Modifier
@@ -222,9 +232,17 @@ fun PokemonTypes(types: List<Type>) {
 
 @Composable
 fun PokemonImage(
-    imageUrl: String
+    number: Int
 ) {
-
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data("$IMAGE_REQUEST_URL$number.png")
+            .crossfade(true)
+            .build(),
+        contentDescription = "",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxWidth().aspectRatio(1f)
+    )
 }
 
 @Composable
@@ -243,8 +261,8 @@ fun PokemonAbout(
             color = Color.DarkGray
         )
         Spacer(modifier = Modifier.height(8.dp))
-        PokemonDetailRow(title = "Height", data = "${pokemonDetail.height} m")
-        PokemonDetailRow(title = "Weight", data = "${pokemonDetail.weight} kg")
+        PokemonDetailRow(title = "Height", data = "${pokemonDetail.height} ft")
+        PokemonDetailRow(title = "Weight", data = "${pokemonDetail.weight} lb")
         var abilities = ""
         pokemonDetail.abilities.forEachIndexed { index, ability ->
             if (index != pokemonDetail.abilities.lastIndexOf(ability)) {
