@@ -47,7 +47,7 @@
 </p>
 
 <h3>Architecture Overview</h3>
-<p>Top News is composed with three different layers - UI layer, domain layer and data layer. Each layer has app components which have different responsibilities.</p>
+<p>Pokedex App follows the unidirectional data flow by adapting architectural layering. The app responds accordingly to user events and update ui states.</p>
 
 <h3>UI Layer</h3>
 <p align="center">
@@ -55,9 +55,9 @@
 </p>
 <p>UI layer displays the application data and serves as the primary point for user interactions. Whenever the app data changes, the UI should update to reflect changes made by either user interaction or external input.</p>
 <ul>
-  <li>The main activity and all the fragments - Feed, Browse, Saved, etc are UI elements and they display articles received from network requests and the database</li>
-  <li>NewsViewModel holds state and plays as a bridge between UI elements and the data layer</li>
-  <li>UI elements request actions to ViewModel and observer ViewModel's livedatas to automatically update screens</li>
+  <li>The main activity hosts the navigation controller and navigates through two screens - PokemonListScreen and PokemonDetailScreen depending on user interactions. </li>
+  <li>PokemonListViewModel requests data to the data layer and PokemonListScreen updates UI observing states held by ViewModel.</li>
+  <li>PokemonDetailViewModel is responsible for fetching pokemon details and updates states for PokemonDetailScreen.</li>
 </ul>
 <br>
 
@@ -67,12 +67,19 @@
 </p>
 <p>Data layer is reponsible for containing application data and business logics. The data layer is consisted of repositories and data sources. It is important to keep each repository as a single source of truth.</p>
 <ul>
-  <li>NewsRepository is a single source of truth and requests data from NewsLocalDataSource and NewsRemoteDataSource.</li>
-  <li>NewsLocalDataSource is a class managing the database built with Room library and NewsRemoteDataSource is a class requesting network response to NewsAPI server.</li>
+  <li>PokemonRepository is a single source of truth and requests data from the remote data source.</li>
+  <li>PokemonRepository requests network responses to PokeAPI server using Retrofit library.</li>
 </ul>
 <br>
 
 <!-- Open APIs -->
 <h2>Open APIs</h2>
-<p>Top News using the <a href="https://newsapi.org//">NewsAPI</a> for fetching JSON object from the server. News API provides articles and breaking news headlines from news sources and blogs across the web with JSON API.</p>
- 
+<img src="https://user-images.githubusercontent.com/57670625/235320883-b4eae21e-93c0-4229-abaf-642d1cb4bc34.png" align="right" width="21%"/>
+<br>
+<p>Pokedex uses <a href="https://pokeapi.co/">PokeApi</a> for fetching JSON object from the server. PokeApi provides a full RESTful API linked to an extensive database detailing everything about the Pokémon main game series.</p>
+<br>
+
+<!-- References -->
+<h2>References</h2>
+<p>This project was built to understand how to build a clean architecture Jetpack Compose app using differnt types of Android libraries.</p>
+<li><a href="https://www.youtube.com/watch?v=v0of23TxIKc&list=PLQkwcJG4YTCTimTCpEL5FZgaWdIZQuB7m">Youtube Tutorial</a>: Step-by-step tutorial to build Android Pokedex app using PokeApi</li>
