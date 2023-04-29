@@ -33,7 +33,10 @@ import com.example.pokedex.R
 import com.example.pokedex.data.remote.responses.Pokemon
 import com.example.pokedex.data.remote.responses.Type
 import com.example.pokedex.util.*
+import com.example.pokedex.util.Constant.DecimetersToFoot
+import com.example.pokedex.util.Constant.HectogramToPounds
 import com.example.pokedex.util.Constant.IMAGE_REQUEST_URL
+import timber.log.Timber
 import java.util.*
 
 @Composable
@@ -106,16 +109,16 @@ fun TopBar(
                     navController.popBackStack()
                 }
         )
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
-            contentDescription = "Add to Favorites",
-            tint = Color.Black,
-            modifier = Modifier
-                .size(24.dp)
-                .clickable {
-                    navController.popBackStack()
-                }
-        )
+//        Icon(
+//            painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
+//            contentDescription = "Add to Favorites",
+//            tint = Color.Black,
+//            modifier = Modifier
+//                .size(24.dp)
+//                .clickable {
+//                    navController.popBackStack()
+//                }
+//        )
     }
 }
 
@@ -155,23 +158,9 @@ fun PokemonDetailSection(
     number: Int,
     modifier: Modifier = Modifier
 ) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        PokemonNumberAndName(
-            number = number,
-            name = pokemonDetail.name
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        PokemonTypes(types = pokemonDetail.types)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        PokemonImage(number = number)
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -179,10 +168,28 @@ fun PokemonDetailSection(
                     color = Color.White,
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
                 )
+                .align(Alignment.BottomCenter)
         ) {
             PokemonAbout(pokemonDetail = pokemonDetail)
             Spacer(modifier = Modifier.height(16.dp))
             PokemonBaseStats(pokemonDetail = pokemonDetail)
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopStart)
+        ) {
+            PokemonNumberAndName(
+                number = number,
+                name = pokemonDetail.name
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            PokemonTypes(types = pokemonDetail.types)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            PokemonImage(number = number)
         }
     }
 }
@@ -199,7 +206,7 @@ fun PokemonNumberAndName(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Text(text = reformatNum(number), fontWeight = FontWeight.Medium, fontSize = 20.sp)
+        Text(text = reformatNum(number), fontWeight = FontWeight.Medium, fontSize = 16.sp)
         Text(text = name, fontWeight = FontWeight.SemiBold, fontSize = 28.sp)
     }
 }
@@ -211,14 +218,22 @@ fun PokemonTypes(types: List<Type>) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (type in types) {
-            Box(
-                contentAlignment = Alignment.Center,
+            Row(
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .clip(CircleShape)
                     .background(parseTypeToColor(type))
-                    .padding(horizontal = 12.dp, vertical = 4.dp)
+                    .padding(start = 8.dp, top = 2.dp, end = 12.dp, bottom = 2.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
+                Icon(
+                    painter = painterResource(id = parseTypeToIcon(type)),
+                    contentDescription = "type",
+                    modifier = Modifier.size(16.dp),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = type.type.name.capitalize(Locale.ROOT),
                     color = Color.White,
@@ -234,15 +249,21 @@ fun PokemonTypes(types: List<Type>) {
 fun PokemonImage(
     number: Int
 ) {
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data("$IMAGE_REQUEST_URL$number.png")
-            .crossfade(true)
-            .build(),
-        contentDescription = "",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxWidth().aspectRatio(1f)
-    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data("$IMAGE_REQUEST_URL$number.png")
+                .crossfade(true)
+                .build(),
+            contentDescription = "",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(250.dp)
+        )
+    }
 }
 
 @Composable
@@ -251,7 +272,7 @@ fun PokemonAbout(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(start = 16.dp, top = 16.dp, end = 16.dp)
     ) {
         Text(
@@ -261,12 +282,20 @@ fun PokemonAbout(
             color = Color.DarkGray
         )
         Spacer(modifier = Modifier.height(8.dp))
-        PokemonDetailRow(title = "Height", data = "${pokemonDetail.height} ft")
-        PokemonDetailRow(title = "Weight", data = "${pokemonDetail.weight} lb")
+        PokemonDetailRow(
+            title = "Height",
+            data = "${String.format("%.2f", pokemonDetail.height * DecimetersToFoot)} ft"
+        )
+        PokemonDetailRow(
+            title = "Weight",
+            data = "${String.format("%.2f", pokemonDetail.weight * HectogramToPounds)} lb"
+        )
         var abilities = ""
-        pokemonDetail.abilities.forEachIndexed { index, ability ->
-            if (index != pokemonDetail.abilities.lastIndexOf(ability)) {
-                abilities += "${ability.ability.name}, "
+        pokemonDetail.abilities.forEach {ability ->
+            abilities += if (ability == pokemonDetail.abilities.last()) {
+                ability.ability.name
+            } else {
+                "${ability.ability.name}, "
             }
         }
         PokemonDetailRow(title = "Abilities", data = abilities)
