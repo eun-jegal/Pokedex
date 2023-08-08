@@ -1,7 +1,7 @@
 package com.example.pokedex.data.local
 
 import androidx.room.Database
-import com.example.pokedex.data.models.PokedexListEntry
+import com.example.pokedex.data.model.PokedexListEntry
 
 @Database(
     entities = [PokedexListEntry::class],

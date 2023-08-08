@@ -1,4 +1,4 @@
-package com.example.pokedex.data.models
+package com.example.pokedex.data.model
 
 import androidx.room.Entity
 

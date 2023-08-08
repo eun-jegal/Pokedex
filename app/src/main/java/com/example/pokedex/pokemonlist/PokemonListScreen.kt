@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.pokedex.R
-import com.example.pokedex.data.models.PokedexListEntry
+import com.example.pokedex.data.model.PokedexListEntry
 import com.example.pokedex.util.reformatNum
 
 @Composable
