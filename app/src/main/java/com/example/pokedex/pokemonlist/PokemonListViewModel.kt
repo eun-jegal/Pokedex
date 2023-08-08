@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.example.pokedex.data.model.PokedexListEntry
-import com.example.pokedex.repository.PokemonRepository
+import com.example.pokedex.data.repository.PokemonRepository
 import com.example.pokedex.util.Constant.IMAGE_REQUEST_URL
 import com.example.pokedex.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,6 +1,8 @@
 package com.example.pokedex.data.remote.responses
 
 
+import com.example.pokedex.data.model.PokedexListEntry
+import com.example.pokedex.util.Constant
 import com.google.gson.annotations.SerializedName
 
 data class Pokemon(
