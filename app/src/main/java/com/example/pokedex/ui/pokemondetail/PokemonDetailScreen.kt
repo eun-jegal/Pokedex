@@ -1,4 +1,4 @@
-package com.example.pokedex.pokemondetail
+package com.example.pokedex.ui.pokemondetail
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -29,14 +29,12 @@ import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.pokedex.R
 import com.example.pokedex.data.remote.responses.Pokemon
 import com.example.pokedex.data.remote.responses.Type
 import com.example.pokedex.util.*
 import com.example.pokedex.util.Constant.DecimetersToFoot
 import com.example.pokedex.util.Constant.HectogramToPounds
 import com.example.pokedex.util.Constant.IMAGE_REQUEST_URL
-import timber.log.Timber
 import java.util.*
 
 @Composable
