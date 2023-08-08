@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pokedex.ui.Screen
+import com.example.pokedex.ui.favoritepokemon.FavoritePokemonScreen
 import com.example.pokedex.ui.pokemondetail.PokemonDetailScreen
 import com.example.pokedex.ui.pokemonlist.PokemonListScreen
 import com.example.pokedex.ui.theme.PokedexTheme
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
                             PokemonListScreen(navController = navController)
                         }
                         composable(Screen.Saved.route) {
-
+                            FavoritePokemonScreen()
                         }
                         composable(
                             route = Screen.Detail.route,
