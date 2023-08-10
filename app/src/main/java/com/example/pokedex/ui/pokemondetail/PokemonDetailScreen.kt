@@ -2,7 +2,9 @@ package com.example.pokedex.ui.pokemondetail
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +14,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,16 +110,16 @@ fun TopBar(
                     navController.popBackStack()
                 }
         )
-//        Icon(
-//            painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
-//            contentDescription = "Add to Favorites",
-//            tint = Color.Black,
-//            modifier = Modifier
-//                .size(24.dp)
-//                .clickable {
-//                    navController.popBackStack()
-//                }
-//        )
+        Icon(
+            imageVector = Icons.Default.FavoriteBorder,
+            contentDescription = "Add to Favorites",
+            tint = Color.Black,
+            modifier = Modifier
+                .size(24.dp)
+                .clickable {
+                    //ToDo: save pokemon
+                }
+        )
     }
 }
 
@@ -198,14 +201,15 @@ fun PokemonNumberAndName(
     name: String,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.Start
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
+        Text(text = name, fontWeight = FontWeight.Medium, fontSize = 28.sp)
         Text(text = reformatNum(number), fontWeight = FontWeight.Medium, fontSize = 16.sp)
-        Text(text = name, fontWeight = FontWeight.SemiBold, fontSize = 28.sp)
     }
 }
 
@@ -235,8 +239,7 @@ fun PokemonTypes(types: List<Type>) {
                 Text(
                     text = type.type.name.capitalize(Locale.ROOT),
                     color = Color.White,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
+                    fontSize = 15.sp
                 )
             }
         }
@@ -259,7 +262,7 @@ fun PokemonImage(
             contentDescription = "",
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .size(250.dp)
+                .size(275.dp)
         )
     }
 }
@@ -289,7 +292,7 @@ fun PokemonAbout(
             data = "${String.format("%.2f", pokemonDetail.weight * HectogramToPounds)} lb"
         )
         var abilities = ""
-        pokemonDetail.abilities.forEach {ability ->
+        pokemonDetail.abilities.forEach { ability ->
             abilities += if (ability == pokemonDetail.abilities.last()) {
                 ability.ability.name
             } else {

@@ -83,6 +83,6 @@ fun reformatNum(num: Int): String {
     return when (num.toString().length) {
         1 -> "#00$numToString"
         2 -> "#0$numToString"
-        else -> "3$numToString"
+        else -> "#$numToString"
     }
 }

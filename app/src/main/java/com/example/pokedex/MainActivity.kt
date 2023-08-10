@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PokedexTheme {
                 val navController = rememberNavController()
-                Scaffold(bottomBar = { BottomNavigationBar(navController = navController)}) {
+                Surface {
                     NavHost(
                         navController = navController,
                         startDestination = Screen.Home.route
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(
                             route = Screen.Detail.route,
-                            arguments =  Screen.Detail.navArguments
+                            arguments = Screen.Detail.navArguments
                         ) {
                             val dominantColor = remember {
                                 val color = it.arguments?.getInt("dominantColor")

@@ -2,7 +2,6 @@ package com.example.pokedex.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.pokedex.data.local.PokemonDao
 import com.example.pokedex.data.local.PokemonDatabase
 import com.example.pokedex.data.remote.PokeApi

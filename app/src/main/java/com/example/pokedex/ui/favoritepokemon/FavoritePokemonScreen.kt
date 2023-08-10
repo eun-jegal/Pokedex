@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -23,35 +24,43 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.pokedex.data.model.PokedexListEntry
+import com.example.pokedex.util.reformatNum
 
 @Composable
 fun FavoritePokemonScreen(
     viewModel: FavoritePokemonViewModel = hiltViewModel()
 ) {
     val savedPokemonList = viewModel.savedPokemonList.value
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxSize()) {
         if (savedPokemonList.isEmpty()) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
                     imageVector = Icons.Default.Favorite,
                     contentDescription = "Favorites",
-                    tint = Color.LightGray,
+                    tint = Color.DarkGray,
                     modifier = Modifier.size(36.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "No favorites yet!",
                     fontSize = 18.sp,
-                    color = Color.LightGray
+                    color = Color.DarkGray
                 )
             }
-        }
-        LazyColumn {
-            items(savedPokemonList) { pokemon ->
-                SavedPokemonItem(pokemon = pokemon)
+        } else {
+            Column(modifier = Modifier.fillMaxSize()) {
+                SearchBar()
+                LazyColumn {
+                    items(savedPokemonList) { pokemon ->
+                        SavedPokemonItem(pokemon = pokemon)
+                        Divider(color = Color.DarkGray)
+                    }
+                }
             }
         }
     }
@@ -62,15 +71,17 @@ fun SavedPokemonItem(
     pokemon: PokedexListEntry
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(text = "#${pokemon.number}")
+            AsyncImage(model = "", contentDescription = pokemon.name)
             Text(text = pokemon.name)
         }
-        AsyncImage(model = "", contentDescription = pokemon.name)
+        Text(text = reformatNum(pokemon.number))
     }
 }
 
