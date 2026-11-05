@@ -5,8 +5,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
-import androidx.navigation.compose.NamedNavArgument
-import androidx.navigation.compose.navArgument
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.navArgument
 
 sealed class Screen(
     val route: String,

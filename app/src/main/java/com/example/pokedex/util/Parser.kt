@@ -8,7 +8,7 @@ import com.example.pokedex.ui.theme.*
 import java.util.*
 
 fun parseTypeToColor(type: Type): Color {
-    return when(type.type.name.toLowerCase(Locale.ROOT)) {
+    return when(type.type.name.lowercase()) {
         "normal" -> TypeNormal
         "fire" -> TypeFire
         "water" -> TypeWater
@@ -32,7 +32,7 @@ fun parseTypeToColor(type: Type): Color {
 }
 
 fun parseTypeToIcon(type: Type): Int {
-    return when(type.type.name.toLowerCase(Locale.ROOT)) {
+    return when(type.type.name.lowercase()) {
         "fire" -> R.drawable.ic_fire
         "water" -> R.drawable.ic_water
         "electric" -> R.drawable.ic_electric
@@ -55,7 +55,7 @@ fun parseTypeToIcon(type: Type): Int {
 }
 
 fun parseStatToColor(stat: Stat): Color {
-    return when(stat.stat.name.toLowerCase()) {
+    return when(stat.stat.name.lowercase()) {
         "hp" -> HPColor
         "attack" -> AtkColor
         "defense" -> DefColor
@@ -67,7 +67,7 @@ fun parseStatToColor(stat: Stat): Color {
 }
 
 fun parseStatToAbbr(stat: Stat): String {
-    return when(stat.stat.name.toLowerCase()) {
+    return when(stat.stat.name.lowercase()) {
         "hp" -> "HP"
         "attack" -> "Atk"
         "defense" -> "Def"

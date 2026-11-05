@@ -3,7 +3,11 @@ package com.example.pokedex
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -20,7 +24,7 @@ import com.example.pokedex.ui.pokemondetail.PokemonDetailScreen
 import com.example.pokedex.ui.pokemonlist.PokemonListScreen
 import com.example.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -56,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             }
                             PokemonDetailScreen(
                                 dominantColor = dominantColor.toArgb(),
-                                name = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                                name = pokemonName?.lowercase() ?: "",
                                 number = pokemonNum ?: 0,
                                 navController = navController
                             )
